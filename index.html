@@ -3,8 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <title style="font-family: 'cascadia code'">spacewars</title>
+<style>
+.button_h0 {
+position: absolute;
+top: 16px;
+right: 16px;
+}
+</style>
 </head>
 <body>
+<button type="button" class="button_h0" id="button_id_h0">connect wallet</button>
 <h1 style="font-family: 'cascadia code'">spacewars</h1>
 <p style="font-family: 'cascadia code'">welcome to spacewars website!</p>
 <h2 style="font-family: 'cascadia code'">how to play</h2>
@@ -12,5 +20,64 @@
 when you reach the score of 10000 you get the cryptocurrency reward.</p>
 <h3 style="font-family: 'cascadia code'">download</h3>
 <a style="font-family: 'cascadia code'" href="https://github.com/spacewars-web/spacewars/releases/download/v3/spacewars.zip" download>click here to download spacewars</a>
+<h3 style="font-family: 'cascadia code'">presale</h3>
+<p style="font-family: 'cascadia code'">the presale costs 0.01 eth.</p>
+<button type="button" id="button_id_h1">buy presale</button>
+<script type="module">
+import { createAppKit } from 'https://esm.sh/@reown/appkit'
+import { base } from 'https://esm.sh/@reown/appkit/networks'
+import { EthersAdapter } from 'https://esm.sh/@reown/appkit-adapter-ethers'
+import { BrowserProvider, Contract, parseEther, ethers } from 'https://esm.sh/ethers'
+
+const project_id_h0 = 'e28c1c9a19772743db174637d3358702';
+
+const metadata_h0 = {
+name: 'spacewars',
+description: 'desktop blockchain game.',
+url: window.location.origin,
+icons: ['https://github.com/spacewars-web/spacewars/blob/main/icon.ico']
+};
+
+const modal_h0 = createAppKit({
+adapters: [new EthersAdapter()],
+networks: [base],
+metadata: metadata_h0,
+projectId: project_id_h0,
+});
+
+const connect_button_h0 = document.getElementById('button_id_h0');
+  
+connect_button_h0.addEventListener('click', () => {
+modal_h0.open();
+});
+
+const buy_presale_h0 = document.getElementById('button_id_h1');
+
+buy_presale_h0.addEventListener('click', async () => {
+
+try {
+
+const provider_h0 = new BrowserProvider(window.ethereum);
+const signer_h0 = await provider_h0.getSigner();
+const contract_address_h0 = "0x9809f65580b24a7bb14065353e16dE06C91748A6"; 
+const contract_abi_h0 = ["function buyPresale() public payable returns (bool success)"];
+
+const presale_contract_h0 = new Contract(contract_address_h0, contract_abi_h0, signer_h0);
+
+buy_presale_h0.innerText = "processing...";
+buy_presale_h0.disabled = true;
+
+const transaction_h0 = await presale_contract_h0.buyPresale({value: parseEther("0.01")});
+const receipt_h0 = await transaction_h0.wait();
+alert("presale purchase successful!");
+} catch (error) {
+alert("transaction cancelled or failed.");
+} finally {
+buy_presale_h0.innerText = "buy presale";
+buy_presale_h0.disabled = false;
+}
+});
+
+</script>
 </body>
 </html>
